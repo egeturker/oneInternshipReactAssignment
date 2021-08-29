@@ -5,14 +5,14 @@ import { CssBaseline } from "@material-ui/core";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["Open Sans", "sans - serif"].join(","),
+    fontFamily: "Open Sans",
   },
   palette: {
     primary: {
       main: "#1EA4CE",
     },
     secondary: {
-      main: "#fff",
+      main: "#1EA4CE",
     },
     background: {
       default: "#E5E5E5",

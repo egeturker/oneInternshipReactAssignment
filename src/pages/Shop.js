@@ -2,6 +2,8 @@ import React from "react";
 import { Grid, Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import basketIcon from "../images/basket.png";
+import CustomRadio from "../components/CustomRadio";
+import CustomCheckbox from "../components/CustomCheckbox";
 
 const useStyles = makeStyles({
   main: {
@@ -9,11 +11,12 @@ const useStyles = makeStyles({
     height: "1500px",
     margin: "auto",
   },
+
   banner: {
     background: "#1EA4CE",
     height: "77px",
   },
-  cart: {
+  bannerCart: {
     background: "#147594",
     width: "130px",
     height: "77px",
@@ -26,24 +29,21 @@ const useStyles = makeStyles({
     verticalAlign: "middle",
     lineHeight: "81px",
   },
-  cartTotal: {
+  bannerCartTotal: {
     color: "#FFF",
     marginLeft: "20px",
     fontSize: "14px",
   },
+
   filterBox: {
-    background: "#FFF",
-    height: "184px",
     marginTop: "55px",
-    boxShadow: "0px 6px 24px rgba(93, 62, 188, 0.04)",
-    borderRadius: "2px",
   },
+
   boxTitle: {
-    position: "relative",
-    top: "-25px",
     fontSize: "13px",
     color: "#697488",
   },
+
   productsTitle: {
     position: "relative",
     top: "-30px",
@@ -56,6 +56,12 @@ const useStyles = makeStyles({
     background: "#FFF",
     height: "1000px",
   },
+  cart: {
+    height: "320px",
+    background: "#FFF",
+    marginTop: "55px",
+    marginLeft: "15px",
+  },
 });
 
 const Shop = () => {
@@ -65,8 +71,8 @@ const Shop = () => {
     <>
       <Box className={classes.banner}>
         <Box className={classes.main}>
-          <Box className={classes.cart}>
-            <span className={classes.cartTotal}>₺ 39,97</span>
+          <Box className={classes.bannerCart}>
+            <span className={classes.bannerCartTotal}>₺ 39,97</span>
           </Box>
         </Box>
       </Box>
@@ -83,16 +89,23 @@ const Shop = () => {
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Sorting</span>
+              <CustomRadio />
             </Box>
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Brands</span>
+              <CustomCheckbox
+                filter={["filter1", "filter2", "ege", "test", "test3"]}
+              />
             </Box>
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Tags</span>
+              <CustomCheckbox
+                filter={["filter1", "filter2", "ege", "test", "test3"]}
+              />
             </Box>
           </Grid>
         </Grid>
@@ -101,7 +114,9 @@ const Shop = () => {
             <span className={classes.productsTitle}>Products</span>
           </Box>
         </Grid>
-        <Grid item xs={3}></Grid>
+        <Grid item xs={3}>
+          <Box className={classes.cart}></Box>
+        </Grid>
         <Grid item xs={1}></Grid>
       </Grid>
     </>
