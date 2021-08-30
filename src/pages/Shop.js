@@ -4,6 +4,12 @@ import { makeStyles } from "@material-ui/styles";
 import basketIcon from "../images/basket.png";
 import CustomRadio from "../components/CustomRadio";
 import CustomCheckbox from "../components/CustomCheckbox";
+import ItemContainer from "../components/ItemContainer";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getItems } from "../features/shop/shopSlice";
+import { useEffect, useState } from "react";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   main: {
@@ -53,7 +59,6 @@ const useStyles = makeStyles({
   productsArea: {
     marginTop: "55px",
     marginLeft: "15px",
-    background: "#FFF",
     height: "1000px",
   },
   cart: {
@@ -66,7 +71,13 @@ const useStyles = makeStyles({
 
 const Shop = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
+  const items = useSelector((state) => state.shop.items);
+
+  useEffect(() => {
+    dispatch(getItems());
+  }, []);
   return (
     <>
       <Box className={classes.banner}>
@@ -109,15 +120,14 @@ const Shop = () => {
             </Box>
           </Grid>
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={6}>
           <Box className={classes.productsArea}>
-            <span className={classes.productsTitle}>Products</span>
+            <ItemContainer items={items} />
           </Box>
         </Grid>
         <Grid item xs={3}>
           <Box className={classes.cart}></Box>
         </Grid>
-        <Grid item xs={1}></Grid>
       </Grid>
     </>
   );
