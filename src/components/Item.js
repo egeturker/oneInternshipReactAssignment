@@ -2,6 +2,9 @@ import { makeStyles } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
 import dummyImg from "../images/placeholder.jpg";
 import { Button } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { setCart } from "../features/shop/shopSlice";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   item: {
@@ -49,8 +52,20 @@ const useStyles = makeStyles({
 
 const Item = ({ name, price }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const addItemHandler = () => {};
+  const cart = useSelector((state) => state.shop.cart);
+
+  const addItemHandler = () => {
+    const cartItem = {
+      id: cart.length + 1,
+      name,
+      price,
+    };
+
+    const newCart = [...cart, cartItem];
+    dispatch(setCart(newCart));
+  };
 
   return (
     <Box className={classes.item}>

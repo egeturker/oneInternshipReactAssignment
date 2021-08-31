@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { getItems, getCompanies, setTags } from "../features/shop/shopSlice";
 import { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
+import Cart from "../components/Cart";
 
 const useStyles = makeStyles({
   main: {
@@ -62,8 +63,6 @@ const useStyles = makeStyles({
     height: "1000px",
   },
   cart: {
-    height: "320px",
-    background: "#FFF",
     marginTop: "55px",
     marginLeft: "15px",
   },
@@ -150,7 +149,9 @@ const Shop = () => {
           </Box>
         </Grid>
         <Grid item xs={3}>
-          <Box className={classes.cart}></Box>
+          <Box className={classes.cart}>
+            <Cart />
+          </Box>
         </Grid>
       </Grid>
     </>
