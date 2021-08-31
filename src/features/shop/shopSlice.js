@@ -21,7 +21,21 @@ export const getItems = createAsyncThunk(
       });
       const items = { mugs, shirts };
       dispatch(setItems(items));
-      return items;
+    } catch (error) {
+      return rejectWithValue(error.data.response);
+    }
+  }
+);
+
+export const getCompanies = createAsyncThunk(
+  "getItems",
+  async (params, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        "https://getirserver.herokuapp.com/api/companies"
+      );
+      const { data } = response;
+      dispatch(setCompanies(data));
     } catch (error) {
       return rejectWithValue(error.data.response);
     }
@@ -33,6 +47,8 @@ const initialState = {
     mugs: [],
     shirts: [],
   },
+  tags: [],
+  companies: [],
   sortType: "lowToHigh",
 };
 
@@ -43,12 +59,14 @@ export const shopSlice = createSlice({
     setItems: (state, action) => {
       state.items = action.payload;
     },
-
     setSortType: (state, action) => {
       state.sortType = action.payload;
+    },
+    setCompanies: (state, action) => {
+      state.companies = action.payload;
     },
   },
 });
 
-export const { setSortType, setItems } = shopSlice.actions;
+export const { setSortType, setItems, setCompanies } = shopSlice.actions;
 export default shopSlice.reducer;

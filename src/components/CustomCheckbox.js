@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 
 const CustomCheckbox = ({ filter }) => {
   const classes = useStyles();
+  const [searchString, setSearchString] = useState("");
 
   let numberOfFilters = filter.length;
   const [boxChecked, setBoxChecked] = useState(() => {
@@ -37,8 +38,6 @@ const CustomCheckbox = ({ filter }) => {
     while (numberOfFilters--) checkBoxStates[numberOfFilters] = false;
     return checkBoxStates;
   });
-
-  const [searchString, setSearchString] = useState("");
 
   return (
     <Box className={classes.filterBox}>

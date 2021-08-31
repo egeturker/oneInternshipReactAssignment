@@ -7,7 +7,7 @@ import CustomCheckbox from "../components/CustomCheckbox";
 import ItemContainer from "../components/ItemContainer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getItems } from "../features/shop/shopSlice";
+import { getItems, getCompanies } from "../features/shop/shopSlice";
 import { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
 
@@ -74,12 +74,27 @@ const Shop = () => {
   const dispatch = useDispatch();
 
   const items = useSelector((state) => state.shop.items);
+  const companies = useSelector((state) => state.shop.companies);
   const sortType = useSelector((state) => state.shop.sortType);
 
+  const [slug, setSlug] = useState([]);
+  const [tags, setTags] = useState([]);
   useEffect(() => {
     dispatch(getItems());
-    console.log(items);
+    dispatch(getCompanies());
   }, []);
+  useEffect(() => {
+    setSlug(companies.map((company) => company.slug));
+  }, [companies]);
+  useEffect(() => {
+    const tempTags = [];
+    items.mugs.map((item) => {
+      item.tags.map((tag) => {
+        if (!tempTags.includes(tag)) tempTags.push(tag);
+      });
+    });
+    setTags(tempTags);
+  }, [items]);
 
   return (
     <>
@@ -109,17 +124,13 @@ const Shop = () => {
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Brands</span>
-              <CustomCheckbox
-                filter={["filter1", "filter2", "ege", "test", "test3"]}
-              />
+              {slug.length > 0 && <CustomCheckbox filter={slug} />}
             </Box>
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Tags</span>
-              <CustomCheckbox
-                filter={["filter1", "filter2", "ege", "test", "test3"]}
-              />
+              {tags.length > 0 && <CustomCheckbox filter={tags} />}
             </Box>
           </Grid>
         </Grid>
