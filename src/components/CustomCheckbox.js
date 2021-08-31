@@ -7,6 +7,11 @@ import { makeStyles } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
 import { className } from "postcss-selector-parser";
 import Scrollbars from "react-custom-scrollbars";
+import {
+  setCheckedCompanies,
+  setCheckedTags,
+} from "../features/shop/shopSlice";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
   filterBox: {
@@ -28,7 +33,8 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomCheckbox = ({ filter }) => {
+const CustomCheckbox = ({ filter, type }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const [searchString, setSearchString] = useState("");
 
@@ -38,6 +44,13 @@ const CustomCheckbox = ({ filter }) => {
     while (numberOfFilters--) checkBoxStates[numberOfFilters] = false;
     return checkBoxStates;
   });
+
+  useEffect(() => {
+    if (type === "company") {
+      dispatch(setCheckedCompanies(boxChecked));
+    }
+    if (type === "tag") dispatch(setCheckedTags(boxChecked));
+  }, [boxChecked]);
 
   return (
     <Box className={classes.filterBox}>

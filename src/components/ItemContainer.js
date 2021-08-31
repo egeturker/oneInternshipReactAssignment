@@ -10,6 +10,7 @@ import Item from "./Item";
 import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,20 +59,26 @@ const ItemContainer = ({ items, sortType }) => {
   const [page, setPage] = useState(1);
   const [displayedItems, setDisplayedItems] = useState(items.mugs.slice(0, 16));
   const [numberOfPages, setNumberOfPages] = useState(
-    Math.floor(items.mugs.length / numberOfItemsInContainer)
+    Math.ceil(items.mugs.length / numberOfItemsInContainer)
   );
+
+  const [sorted, setSorted] = useState(items);
+  const companies = useSelector((state) => state.shop.companies);
+  const tags = useSelector((state) => state.shop.tags);
+  const checkedCompanies = useSelector((state) => state.shop.checkedCompanies);
+  const checkedTags = useSelector((state) => state.shop.checkedTags);
 
   const handlePageChange = (event, value) => {
     if (tabValue === 0) {
       setDisplayedItems(
-        items.mugs.slice(
+        sorted.mugs.slice(
           (value - 1) * numberOfItemsInContainer,
           value * numberOfItemsInContainer
         )
       );
     } else if (tabValue === 1) {
       setDisplayedItems(
-        items.shirts.slice(
+        sorted.shirts.slice(
           (value - 1) * numberOfItemsInContainer,
           value * numberOfItemsInContainer
         )
@@ -85,15 +92,15 @@ const ItemContainer = ({ items, sortType }) => {
     setTabValue(newValue);
     if (newValue === 0) {
       setNumberOfPages(
-        Math.floor(items.mugs.length / numberOfItemsInContainer)
+        Math.ceil(sorted.mugs.length / numberOfItemsInContainer)
       );
-      setDisplayedItems(items.mugs.slice(0, 16));
+      setDisplayedItems(sorted.mugs.slice(0, 16));
     }
     if (newValue === 1) {
       setNumberOfPages(
-        Math.floor(items.shirts.length / numberOfItemsInContainer)
+        Math.ceil(sorted.shirts.length / numberOfItemsInContainer)
       );
-      setDisplayedItems(items.shirts.slice(0, 16));
+      setDisplayedItems(sorted.shirts.slice(0, 16));
     }
 
     setPage(1);
@@ -102,44 +109,85 @@ const ItemContainer = ({ items, sortType }) => {
   useEffect(() => {
     let mugs = items.mugs.slice();
     let shirts = items.shirts.slice();
+    let mugsFiltered = [];
+    let shirtsFiltered = [];
+
+    checkedCompanies.map((company, index) => {
+      if (company) {
+        mugsFiltered = mugsFiltered.concat(
+          mugs.filter((mug) => mug.manufacturer === companies[index].slug)
+        );
+      }
+    });
+    if (mugsFiltered.length === 0) mugsFiltered = mugs;
+    let mugsFiltered2 = [];
+    checkedTags.map((tag, index) => {
+      if (tag) {
+        mugsFiltered2 = mugsFiltered2.concat(
+          mugsFiltered.filter((mug) => mug.tags.includes(tags[index]))
+        );
+      }
+    });
+    if (mugsFiltered2.length === 0) mugsFiltered2 = mugsFiltered;
+
+    checkedCompanies.map((company, index) => {
+      if (company) {
+        shirtsFiltered = shirtsFiltered.concat(
+          shirts.filter((shirt) => shirt.manufacturer === companies[index].slug)
+        );
+      }
+    });
+    if (shirtsFiltered.length === 0) shirtsFiltered = shirts;
+    let shirtsFiltered2 = [];
+    checkedTags.map((tag, index) => {
+      if (tag) {
+        shirtsFiltered2 = shirtsFiltered2.concat(
+          shirtsFiltered.filter((shirt) => shirt.tags.includes(tags[index]))
+        );
+      }
+    });
+    if (shirtsFiltered2.length === 0) shirtsFiltered2 = shirtsFiltered;
 
     if (sortType === "lowToHigh") {
-      mugs.sort((a, b) => {
+      mugsFiltered2.sort((a, b) => {
         return a.price - b.price;
       });
-      shirts.sort((a, b) => {
+      shirtsFiltered2.sort((a, b) => {
         return a.price - b.price;
       });
     } else if (sortType === "highToLow") {
-      mugs.sort((a, b) => {
+      mugsFiltered2.sort((a, b) => {
         return b.price - a.price;
       });
-      shirts.sort((a, b) => {
+      shirtsFiltered2.sort((a, b) => {
         return b.price - a.price;
       });
     } else if (sortType === "newToOld") {
-      mugs.sort((a, b) => {
+      mugsFiltered2.sort((a, b) => {
         return a.added - b.added;
       });
-      shirts.sort((a, b) => {
+      shirtsFiltered2.sort((a, b) => {
         return a.added - b.added;
       });
     } else if (sortType === "oldToNew") {
-      mugs.sort((a, b) => {
+      mugsFiltered2.sort((a, b) => {
         return b.added - a.added;
       });
-      shirts.sort((a, b) => {
+      shirtsFiltered2.sort((a, b) => {
         return b.added - a.added;
       });
     }
 
-    const sortedItems = { mugs, shirts };
+    const sortedItems = { mugs: mugsFiltered2, shirts: shirtsFiltered2 };
+    setSorted(sortedItems);
 
     if (tabValue === 0) setDisplayedItems(sortedItems.mugs.slice(0, 16));
     else if (tabValue === 1) setDisplayedItems(sortedItems.shirts.slice(0, 16));
-
+    setNumberOfPages(
+      Math.ceil(sortedItems.mugs.length / numberOfItemsInContainer)
+    );
     setPage(1);
-  }, [sortType]);
+  }, [sortType, checkedCompanies, checkedTags]);
 
   return (
     <div className={classes.root}>

@@ -50,6 +50,8 @@ const initialState = {
   tags: [],
   companies: [],
   sortType: "lowToHigh",
+  checkedTags: [],
+  checkedCompanies: [],
 };
 
 export const shopSlice = createSlice({
@@ -62,11 +64,27 @@ export const shopSlice = createSlice({
     setSortType: (state, action) => {
       state.sortType = action.payload;
     },
+    setTags: (state, action) => {
+      state.tags = action.payload;
+    },
     setCompanies: (state, action) => {
       state.companies = action.payload;
+    },
+    setCheckedTags: (state, action) => {
+      state.checkedTags = action.payload;
+    },
+    setCheckedCompanies: (state, action) => {
+      state.checkedCompanies = action.payload;
     },
   },
 });
 
-export const { setSortType, setItems, setCompanies } = shopSlice.actions;
+export const {
+  setSortType,
+  setItems,
+  setCompanies,
+  setTags,
+  setCheckedCompanies,
+  setCheckedTags,
+} = shopSlice.actions;
 export default shopSlice.reducer;

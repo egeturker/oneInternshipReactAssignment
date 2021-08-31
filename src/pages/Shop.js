@@ -7,7 +7,7 @@ import CustomCheckbox from "../components/CustomCheckbox";
 import ItemContainer from "../components/ItemContainer";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getItems, getCompanies } from "../features/shop/shopSlice";
+import { getItems, getCompanies, setTags } from "../features/shop/shopSlice";
 import { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
 
@@ -75,17 +75,20 @@ const Shop = () => {
 
   const items = useSelector((state) => state.shop.items);
   const companies = useSelector((state) => state.shop.companies);
+  const tags = useSelector((state) => state.shop.tags);
   const sortType = useSelector((state) => state.shop.sortType);
 
-  const [slug, setSlug] = useState([]);
-  const [tags, setTags] = useState([]);
+  const [slugFilter, setSlugFilter] = useState([]);
+  const [tagsFilter, setTagsFilter] = useState([]);
   useEffect(() => {
     dispatch(getItems());
     dispatch(getCompanies());
   }, []);
+
   useEffect(() => {
-    setSlug(companies.map((company) => company.slug));
+    setSlugFilter(companies.map((company) => company.slug));
   }, [companies]);
+
   useEffect(() => {
     const tempTags = [];
     items.mugs.map((item) => {
@@ -93,7 +96,8 @@ const Shop = () => {
         if (!tempTags.includes(tag)) tempTags.push(tag);
       });
     });
-    setTags(tempTags);
+    setTagsFilter(tempTags);
+    dispatch(setTags(tempTags));
   }, [items]);
 
   return (
@@ -124,13 +128,17 @@ const Shop = () => {
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Brands</span>
-              {slug.length > 0 && <CustomCheckbox filter={slug} />}
+              {slugFilter.length > 0 && (
+                <CustomCheckbox filter={slugFilter} type="company" />
+              )}
             </Box>
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Tags</span>
-              {tags.length > 0 && <CustomCheckbox filter={tags} />}
+              {tagsFilter.length > 0 && (
+                <CustomCheckbox filter={tagsFilter} type="tag" />
+              )}
             </Box>
           </Grid>
         </Grid>
