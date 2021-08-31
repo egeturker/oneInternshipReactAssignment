@@ -74,10 +74,13 @@ const Shop = () => {
   const dispatch = useDispatch();
 
   const items = useSelector((state) => state.shop.items);
+  const sortType = useSelector((state) => state.shop.sortType);
 
   useEffect(() => {
     dispatch(getItems());
+    console.log(items);
   }, []);
+
   return (
     <>
       <Box className={classes.banner}>
@@ -122,7 +125,9 @@ const Shop = () => {
         </Grid>
         <Grid item xs={6}>
           <Box className={classes.productsArea}>
-            <ItemContainer items={items} />
+            {items.mugs.length > 0 && (
+              <ItemContainer items={items} sortType={sortType} />
+            )}
           </Box>
         </Grid>
         <Grid item xs={3}>

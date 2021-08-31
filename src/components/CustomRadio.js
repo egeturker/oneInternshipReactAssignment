@@ -7,6 +7,9 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { setSortType } from "../features/shop/shopSlice";
 
 const useStyles = makeStyles({
   sortingBox: {
@@ -22,8 +25,10 @@ const useStyles = makeStyles({
 
 const CustomRadio = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const [value, setValue] = useState("lowToHigh");
+  const sortType = useSelector((state) => state.shop.sortType);
+
   return (
     <>
       <Box className={classes.sortingBox}>
@@ -31,9 +36,9 @@ const CustomRadio = () => {
           <RadioGroup
             aria-label="price"
             name="price"
-            value={value}
+            value={sortType}
             onChange={(event) => {
-              setValue(event.target.value);
+              dispatch(setSortType(event.target.value));
             }}
           >
             <FormControlLabel
