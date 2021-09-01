@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 const useStyles = makeStyles({
   item: {
     width: "124px",
-    marginBottom: "15px",
+    marginBottom: "20px",
   },
   itemBg: {
     background: "#EFEFEF",
@@ -26,19 +26,21 @@ const useStyles = makeStyles({
 
   itemPrice: {
     color: "#1EA4CE",
-    fontWeight: "700",
+    fontWeight: "600",
     fontFamily: "Helvetica",
     fontSize: "14px",
+    marginTop: "5px",
+    marginLeft: "3px",
   },
 
   itemName: {
     color: "#191919",
-    fontWeight: "600",
+    fontWeight: "500",
     fontSize: "14px",
     lineHeight: "20px",
     fontStyle: "normal",
-    fontFamily: "Open Sans",
-    height: "30px",
+    height: "40px",
+    marginLeft: "3px",
   },
 
   itemButton: {
@@ -47,6 +49,8 @@ const useStyles = makeStyles({
     backGroundColor: "#1EA4CE",
     borderRadius: "2px",
     color: "#FFF",
+    marginTop: "5px",
+    textTransform: "none",
   },
 });
 
@@ -77,12 +81,8 @@ const Item = ({ name, price }) => {
       >
         <img src={dummyImg} alt="" className={classes.itemImg} />
       </Box>
-      <Box className={classes.itemPrice} m={1}>
-        ₺ {price}
-      </Box>
-      <Box className={classes.itemName} m={1}>
-        {name}
-      </Box>
+      <Box className={classes.itemPrice}>₺{price}</Box>
+      <Box className={classes.itemName}>{name}</Box>
       <Button
         variant="contained"
         color="primary"

@@ -11,7 +11,7 @@ import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+import { Button } from "@material-ui/core";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -24,7 +24,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
+        <Box p={2}>
           <Typography>{children}</Typography>
         </Box>
       )}
@@ -50,19 +50,24 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
   },
+
+  tab: {
+    color: "#FFF",
+  },
 }));
 
 const ItemContainer = ({ items, sortType }) => {
   const numberOfItemsInContainer = 16;
   const classes = useStyles();
+
   const [tabValue, setTabValue] = useState(0);
   const [page, setPage] = useState(1);
   const [displayedItems, setDisplayedItems] = useState(items.mugs.slice(0, 16));
   const [numberOfPages, setNumberOfPages] = useState(
     Math.ceil(items.mugs.length / numberOfItemsInContainer)
   );
-
   const [sorted, setSorted] = useState(items);
+
   const companies = useSelector((state) => state.shop.companies);
   const tags = useSelector((state) => state.shop.tags);
   const checkedCompanies = useSelector((state) => state.shop.checkedCompanies);
@@ -84,7 +89,6 @@ const ItemContainer = ({ items, sortType }) => {
         )
       );
     }
-
     setPage(value);
   };
 
@@ -102,7 +106,6 @@ const ItemContainer = ({ items, sortType }) => {
       );
       setDisplayedItems(sorted.shirts.slice(0, 16));
     }
-
     setPage(1);
   };
 
@@ -197,8 +200,8 @@ const ItemContainer = ({ items, sortType }) => {
           onChange={handleTabChange}
           aria-label="shop tabs"
         >
-          <Tab label="Mug" {...a11yProps(0)} />
-          <Tab label="Shirt" {...a11yProps(1)} />
+          <Tab label="Mug" {...a11yProps(0)} className={classes.tab} />
+          <Tab label="Shirt" {...a11yProps(1)} className={classes.tab} />
         </Tabs>
       </AppBar>
       <TabPanel value={tabValue} index={0}>
@@ -217,7 +220,6 @@ const ItemContainer = ({ items, sortType }) => {
           onChange={handlePageChange}
         />
       </TabPanel>
-
       <TabPanel value={tabValue} index={1}>
         <Grid container>
           {displayedItems.map((item) => {
