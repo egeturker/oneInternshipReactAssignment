@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setSortType } from "../features/shop/shopSlice";
+import checkIcon from "../images/check.png";
 
 const useStyles = makeStyles({
   sortingBox: {
@@ -18,8 +19,10 @@ const useStyles = makeStyles({
     boxShadow: "0px 6px 24px rgba(93, 62, 188, 0.04)",
     borderRadius: "2px",
     paddingLeft: "20px",
-    paddingTop: "5px",
+    paddingTop: "10px",
     color: "#525252",
+    fontSize: "14px",
+    marginTop: "10px",
   },
 });
 

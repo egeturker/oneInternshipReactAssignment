@@ -11,6 +11,7 @@ import { getItems, getCompanies, setTags } from "../features/shop/shopSlice";
 import { useEffect, useState } from "react";
 import { Button } from "@material-ui/core";
 import Cart from "../components/Cart";
+import CustomProgress from "../components/CustomProgress";
 
 const useStyles = makeStyles({
   main: {
@@ -44,13 +45,15 @@ const useStyles = makeStyles({
 
   filterBox: {
     marginTop: "55px",
+    marginLeft: "15px",
   },
 
   boxTitle: {
     fontSize: "13px",
+    fontStyle: "normal",
+    fontWeight: "500",
     color: "#697488",
   },
-
   productsTitle: {
     position: "relative",
     top: "-30px",
@@ -76,6 +79,7 @@ const Shop = () => {
   const companies = useSelector((state) => state.shop.companies);
   const tags = useSelector((state) => state.shop.tags);
   const sortType = useSelector((state) => state.shop.sortType);
+  const cartTotal = useSelector((state) => state.shop.cartTotal);
 
   const [slugFilter, setSlugFilter] = useState([]);
   const [tagsFilter, setTagsFilter] = useState([]);
@@ -104,19 +108,20 @@ const Shop = () => {
       <Box className={classes.banner}>
         <Box className={classes.main}>
           <Box className={classes.bannerCart}>
-            <span className={classes.bannerCartTotal}>₺ 39,97</span>
+            <span className={classes.bannerCartTotal}>
+              ₺ {cartTotal.toFixed(2)}
+            </span>
           </Box>
         </Box>
       </Box>
       <Grid container className={classes.main}>
-        <Grid item xs={1}></Grid>
         <Grid
           item
           container
           display="flex"
           flexDirection="column"
           alignContent="flex-start"
-          xs={2}
+          xs={3}
         >
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
@@ -127,16 +132,20 @@ const Shop = () => {
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Brands</span>
-              {slugFilter.length > 0 && (
+              {slugFilter.length > 0 ? (
                 <CustomCheckbox filter={slugFilter} type="company" />
+              ) : (
+                <CustomProgress />
               )}
             </Box>
           </Grid>
           <Grid item xs={12}>
             <Box className={classes.filterBox}>
               <span className={classes.boxTitle}>Tags</span>
-              {tagsFilter.length > 0 && (
+              {tagsFilter.length > 0 ? (
                 <CustomCheckbox filter={tagsFilter} type="tag" />
+              ) : (
+                <CustomProgress />
               )}
             </Box>
           </Grid>

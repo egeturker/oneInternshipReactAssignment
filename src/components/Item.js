@@ -78,7 +78,7 @@ const Item = ({ name, price }) => {
         <img src={dummyImg} alt="" className={classes.itemImg} />
       </Box>
       <Box className={classes.itemPrice} m={1}>
-        {price}
+        ₺ {price}
       </Box>
       <Box className={classes.itemName} m={1}>
         {name}

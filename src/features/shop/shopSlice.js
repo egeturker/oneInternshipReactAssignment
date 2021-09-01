@@ -53,6 +53,7 @@ const initialState = {
   checkedTags: [],
   checkedCompanies: [],
   cart: [],
+  cartTotal: 0,
 };
 
 export const shopSlice = createSlice({
@@ -80,6 +81,9 @@ export const shopSlice = createSlice({
     setCart: (state, action) => {
       state.cart = action.payload;
     },
+    setCartTotal: (state, action) => {
+      state.cartTotal = action.payload;
+    },
   },
 });
 
@@ -91,5 +95,6 @@ export const {
   setCheckedCompanies,
   setCheckedTags,
   setCart,
+  setCartTotal,
 } = shopSlice.actions;
 export default shopSlice.reducer;

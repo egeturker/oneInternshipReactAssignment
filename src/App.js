@@ -5,7 +5,7 @@ import { CssBaseline } from "@material-ui/core";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "Open Sans",
+    fontFamily: "'Open Sans', sans-serif",
   },
   palette: {
     primary: {

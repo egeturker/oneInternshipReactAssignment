@@ -5,7 +5,6 @@ import { Checkbox } from "@material-ui/core";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Box } from "@material-ui/core";
-import { className } from "postcss-selector-parser";
 import Scrollbars from "react-custom-scrollbars";
 import {
   setCheckedCompanies,
@@ -16,11 +15,12 @@ import { useDispatch } from "react-redux";
 const useStyles = makeStyles({
   filterBox: {
     background: "#FFF",
-    height: "184px",
+    height: "200px",
     boxShadow: "0px 6px 24px rgba(93, 62, 188, 0.04)",
     borderRadius: "2px",
     paddingLeft: "20px",
     paddingTop: "5px",
+    marginTop: "10px",
     color: "#525252",
   },
 
@@ -30,6 +30,7 @@ const useStyles = makeStyles({
 
   searchBox: {
     width: "90%",
+    marginBottom: "5px",
   },
 });
 
@@ -63,10 +64,14 @@ const CustomCheckbox = ({ filter, type }) => {
         fullWidth
         className={classes.searchBox}
       />
-      <Scrollbars style={{ height: 130, width: "92%" }}>
+      <Scrollbars style={{ height: 135, width: "92%" }}>
         <FormGroup row>
           {boxChecked.map((checkBox, index) => {
-            if (filter[index].search(searchString) >= 0 || searchString === "")
+            if (
+              filter[index].toLowerCase().search(searchString.toLowerCase()) >=
+                0 ||
+              searchString === ""
+            )
               return (
                 <FormControlLabel
                   className={classes.checkBox}
