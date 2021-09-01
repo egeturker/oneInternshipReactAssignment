@@ -9,7 +9,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getItems, getCompanies, setTags } from "../features/shop/shopSlice";
 import { useEffect, useState } from "react";
-import { Button } from "@material-ui/core";
 import Cart from "../components/Cart";
 import CustomProgress from "../components/CustomProgress";
 
@@ -45,7 +44,7 @@ const useStyles = makeStyles({
 
   filterBox: {
     marginTop: "55px",
-    marginLeft: "15px",
+    marginLeft: "5px",
   },
 
   boxTitle: {
@@ -67,7 +66,7 @@ const useStyles = makeStyles({
   },
   cart: {
     marginTop: "55px",
-    marginLeft: "15px",
+    marginLeft: "5px",
   },
 });
 

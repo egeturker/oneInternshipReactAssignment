@@ -3,7 +3,7 @@ import { Box } from "@material-ui/core";
 import dummyImg from "../images/placeholder.jpg";
 import { Button } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { setCart } from "../features/shop/shopSlice";
+import { setCart, setCartTotal } from "../features/shop/shopSlice";
 import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles({
@@ -59,15 +59,37 @@ const Item = ({ name, price }) => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.shop.cart);
+  const cartTotal = useSelector((state) => state.shop.cartTotal);
 
   const addItemHandler = () => {
+    let exists = false;
+    let existingItemIndex;
+    let existingItem;
+
+    cart.map((item, index) => {
+      if (item.name === name) {
+        exists = true;
+        existingItem = { ...item };
+        existingItemIndex = index;
+      }
+    });
+
+    let newCart = [...cart];
     const cartItem = {
       id: cart.length + 1,
       name,
       price,
+      amount: 1,
     };
-
-    const newCart = [...cart, cartItem];
+    if (exists) {
+      existingItem.amount++;
+      newCart.splice(existingItemIndex, 1);
+      newCart.splice(existingItemIndex, 0, existingItem);
+    } else {
+      newCart.push(cartItem);
+    }
+    const newTotal = cartTotal + price;
+    dispatch(setCartTotal(newTotal));
     dispatch(setCart(newCart));
   };
 

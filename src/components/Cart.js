@@ -1,18 +1,29 @@
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import CartItem from "./CartItem";
 import { setCart, setCartTotal } from "../features/shop/shopSlice";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const useStyles = makeStyles({
   cart: {
     minHeight: "320px",
+    width: "285px",
     background: "#FFF",
     border: "6px solid #1EA4CE",
     borderRadius: "2px",
-    width: "90%",
+    marginRight: "5px",
+    padding: "10px",
+  },
+  cartTotal: {
+    border: "3px solid #1EA4CE",
+    borderRadius: "1px",
+    padding: "8px",
+    backgroundColor: "#fff",
+    width: "80px",
+    height: "40px",
+    marginTop: "10px",
   },
 });
 
@@ -23,14 +34,6 @@ const Cart = () => {
   const cart = useSelector((state) => state.shop.cart);
   const cartTotal = useSelector((state) => state.shop.cartTotal);
 
-  useEffect(() => {
-    let total = 0;
-    cart.map((item) => {
-      total += item.price;
-    });
-    dispatch(setCartTotal(total));
-  });
-
   const removeItem = (id) => {
     const newCart = cart.filter((item) => {
       return item.id !== id;
@@ -39,18 +42,24 @@ const Cart = () => {
   };
 
   return (
-    <Box className={classes.cart}>
-      {cart.map((item) => {
-        return (
-          <CartItem
-            removeItem={removeItem}
-            id={item.id}
-            name={item.name}
-            price={item.price}
-          />
-        );
-      })}
-    </Box>
+    <>
+      <Box className={classes.cart}>
+        {cart.map((item) => {
+          return (
+            <Box>
+              <CartItem
+                removeItem={removeItem}
+                id={item.id}
+                name={item.name}
+                price={item.price}
+                amount={item.amount}
+              />
+            </Box>
+          );
+        })}
+      </Box>
+      <Box className={classes.cartTotal}>₺ {cartTotal.toFixed(2)}</Box>
+    </>
   );
 };
 
